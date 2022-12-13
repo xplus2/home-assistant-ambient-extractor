@@ -1,9 +1,10 @@
 {
+  "version": "0.1",
   "domain": "ambient_extractor",
   "name": "Ambient Extractor",
-  "version": "0.1",
   "config_flow": false,
-  "documentation": "https://github.com/xplus2/home-assistant-ambient-extractor/",
+  "documentation": "https://github.com/xplus2/home-assistant-ambient-extractor",
+  "issues": "https://github.com/xplus2/home-assistant-ambient-extractor/issues",
   "requirements": ["colorthief==0.2.1"],
   "codeowners": ["@xplus2"]
 }
