@@ -1,5 +1,5 @@
 {
-  "name": "Ambient Extractor for Home Assistant",
+  "name": "Ambient Extractor",
   "homeassistant": "2022.4.0",
   "render_readme": true
 }
