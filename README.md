@@ -30,5 +30,5 @@ Using helper variables:
       brightness_auto: true
       brightness_mode: natural
       brightness_min: "{{ states('input_number.ambilight_brightness_min') }}"
-      brightness_max: "{{ states('input_number.ambilight_brightness') }}"
+      brightness_max: "{{ states('input_number.ambilight_brightness_max') }}"
 
