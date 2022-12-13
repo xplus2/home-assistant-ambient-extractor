@@ -26,7 +26,6 @@ from homeassistant.helpers.typing import ConfigType
 from .const import (
     ATTR_PATH,
     ATTR_URL,
-    ATTR_ADB,
     DOMAIN,
     SERVICE_TURN_ON,
     ATTR_BRIGHTNESS_AUTO,
@@ -45,7 +44,6 @@ SERVICE_SCHEMA = vol.All(
             **LIGHT_TURN_ON_SCHEMA,
             vol.Exclusive(ATTR_PATH, "ambient_extractor"): cv.isfile,
             vol.Exclusive(ATTR_URL, "ambient_extractor"): cv.url,
-            vol.Exclusive(ATTR_ADB, "ambient_extractor"): cv.string,
             vol.Optional(ATTR_BRIGHTNESS_AUTO, default=False): cv.boolean,
             vol.Optional(ATTR_BRIGHTNESS_MODE, default="mean"): cv.string,
             vol.Optional(ATTR_BRIGHTNESS_MIN, default=2): cv.positive_int,
@@ -130,13 +128,6 @@ async def async_setup(hass: HomeAssistant, hass_config: ConfigType) -> bool:
                     extract_color_from_path, image_reference, check_brightness, br_mode
                 )
 
-            elif ATTR_ADB in service_data:
-                image_type = "adb screenshot"
-                image_reference = service_data.pop(ATTR_ADB)
-                colorset = await async_extract_color_from_adb(
-                    image_reference, check_brightness, br_mode
-                )
-
             color = colorset["color"]
             if check_brightness:
                 brightness = colorset["brightness"]
@@ -176,30 +167,6 @@ async def async_setup(hass: HomeAssistant, hass_config: ConfigType) -> bool:
         async_handle_service,
         schema=SERVICE_SCHEMA,
     )
-
-
-    async def async_extract_color_from_adb(hostname, check_brightness, br_mode):
-        return
-
-        # adb_port = 5555
-        # adb_host = hostname
-
-        # client = AdbClient(host=adb_host, port=adb_port)
-        # device = client.device(adb_host)
-        # content = device.screencap()
-        # with io.BytesIO(content) as _file:
-        #     _file.name = "ambient_extractor.png"
-        #     _file.seek(0)
-
-        #     color = _get_color(_file)
-        #     brightness = 0
-        #     if check_brightness:
-        #         brightness = _get_brightness(_file, br_mode)
-
-        #     return {
-        #         "color": color,
-        #         "brightness": brightness
-        #    }
 
 
     async def async_extract_color_from_url(url, check_brightness, br_mode):
