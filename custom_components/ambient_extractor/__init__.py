@@ -103,7 +103,7 @@ async def async_setup(hass: HomeAssistant, hass_config: ConfigType) -> bool:
         br_min = 2
         br_max = 70
         check_brightness = True
-        br_mode = "natural"
+        br_mode = "mean"
         if ATTR_BRIGHTNESS_MIN in service_data:
             br_min = service_data.pop(ATTR_BRIGHTNESS_MIN)
         if ATTR_BRIGHTNESS_MAX in service_data:
