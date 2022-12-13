@@ -101,7 +101,7 @@ async def async_setup(hass: HomeAssistant, hass_config: ConfigType) -> bool:
         service_data = dict(service_call.data)
 
         br_min = 2
-        br_max = 100
+        br_max = 70
         check_brightness = True
         br_mode = "natural"
         if ATTR_BRIGHTNESS_MIN in service_data:
@@ -131,8 +131,6 @@ async def async_setup(hass: HomeAssistant, hass_config: ConfigType) -> bool:
             color = colorset["color"]
             if check_brightness:
                 brightness = colorset["brightness"]
-            else:
-                brightness = br_min
 
 
         except UnidentifiedImageError as ex:
@@ -147,7 +145,8 @@ async def async_setup(hass: HomeAssistant, hass_config: ConfigType) -> bool:
         if color:
             service_data[ATTR_RGB_COLOR] = color
 
-        if check_brightness and brightness:
+        if brightness:
+            """Apply min and max brightness"""
             if br_min >= br_max:
                 effective_brightness = br_min
             else:
@@ -221,7 +220,7 @@ async def async_setup(hass: HomeAssistant, hass_config: ConfigType) -> bool:
         color = _get_color(_file)
         brightness = 0
         if check_brightness:
-            brightness : _get_brightness(_file, br_mode)
+            brightness = _get_brightness(_file, br_mode)
 
         return {
             "color": color,
