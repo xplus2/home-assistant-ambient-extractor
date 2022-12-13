@@ -12,9 +12,10 @@ Fork of [color_extractor](https://www.home-assistant.io/integrations/color_extra
         - light.living_room_zha_group_0x0002
       transition: 0.4
       
+      # bool, default: false
       brightness_auto: true
       
-      # mean, rms, natural
+      # string(mean|rms|natural), default: mean
       brightness_mode: natural
       
       # 0-255, default: 2
@@ -22,6 +23,7 @@ Fork of [color_extractor](https://www.home-assistant.io/integrations/color_extra
       
       # 0-255, default: 100
       brightness_max: 70
+      
 
 Using helper variables:
 
