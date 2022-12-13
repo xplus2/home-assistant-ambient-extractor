@@ -8,7 +8,7 @@ Fork of [color_extractor](https://www.home-assistant.io/integrations/color_extra
 ### Using HACS
 
 1. Ensure that [HACS](https://github.com/hacs/integration) is installed.
-2. Add Custom repository `https://github.com/xplus2/home-assistant-integrations`
+2. Add Custom repository `https://github.com/xplus2/home-assistant-ambient-extractor`
 3. Install the "Ambient Extractor" integration.
 4. [Configure the integration](#configuration).
 5. Restart Home Assistant.
