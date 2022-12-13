@@ -1,4 +1,4 @@
-"""Module for ambient_extractor (RGB extraction from images) component."""
+"""Module for ambient_extractor (RGB/brightness extraction from images) component."""
 import asyncio
 import io
 import logging
