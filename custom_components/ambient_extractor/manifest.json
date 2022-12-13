@@ -1,5 +1,5 @@
 {
-  "version": "0.1",
+  "version": "0.3",
   "domain": "ambient_extractor",
   "name": "Ambient Extractor",
   "config_flow": false,
