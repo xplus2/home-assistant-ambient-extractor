@@ -71,26 +71,26 @@ def _get_color(file_handler) -> tuple:
     return color
 
 
-def _get_brightness(file_handler, br_mode):
-    brightness = 0
+def _get_brightness(file_handler, br_mode, color):
     if br_mode == "natural":
         im = Image.open(file_handler)
         stat = ImageStat.Stat(im)
         r,g,b = stat.mean
-        brightness = math.sqrt(0.241*(r**2) + 0.691*(g**2) + 0.068*(b**2))
+        return math.sqrt(0.241*(r**2) + 0.691*(g**2) + 0.068*(b**2))
 
-    elif br_mode == "rms":
+    if br_mode == "rms":
         im = Image.open(file_handler).convert('L')
         stat = ImageStat.Stat(im)
-        brightness = stat.rms[0]
+        return stat.rms[0]
 
-    else:
-        # mean
-        im = Image.open(file_handler).convert('L')
-        stat = ImageStat.Stat(im)
-        brightness = stat.mean[0]
+    if br_mode == "dominant":
+        r, g, b = color
+        return (r + g + b) / 3
 
-    return brightness
+    # mean
+    im = Image.open(file_handler).convert('L')
+    stat = ImageStat.Stat(im)
+    return stat.mean[0]
 
 
 async def async_setup(hass: HomeAssistant, hass_config: ConfigType) -> bool:
@@ -198,7 +198,7 @@ async def async_setup(hass: HomeAssistant, hass_config: ConfigType) -> bool:
             color = _get_color(_file)
             brightness = 0
             if check_brightness:
-                brightness = _get_brightness(_file, br_mode)
+                brightness = _get_brightness(_file, br_mode, color)
 
             return {
                 "color": color,
@@ -220,7 +220,7 @@ async def async_setup(hass: HomeAssistant, hass_config: ConfigType) -> bool:
         color = _get_color(_file)
         brightness = 0
         if check_brightness:
-            brightness = _get_brightness(_file, br_mode)
+            brightness = _get_brightness(_file, br_mode, color)
 
         return {
             "color": color,
