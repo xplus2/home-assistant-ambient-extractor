@@ -1,8 +1,42 @@
 
+
 # Ambient Extractor
 
 Fork of [color_extractor](https://www.home-assistant.io/integrations/color_extractor/), adding automatic brightness.
-  
+
+### Service data attributes
+| Attribute | Optional | Type | Default | Description |
+|--|--|--|--|--|
+| brightness_auto | Yes | Boolean | False | Detect and set brightness
+| brightness_mode | Yes | mean\|rms\|natural | mean | Brightness calculation method
+| brightness_min  | Yes | Int: 0-255 | 2 | Minimal brightness. `< 2` means off for most devices.
+| brightness_max  | Yes | Int: 0-255 | 70 | Maximal brightness, should be `> brightness_min`.
+ 
+Besides `color_rgb`and `brightness`, feel free to set [generic light](https://www.home-assistant.io/integrations/light/) attributes. For a static brightness setting, don't enable `brightness_auto`, just add a `brightness: ` value.
+
+### Automation trigger recommendations
+
+Slow sources like Android Debug Bridge (ADB) can take up to 15 seconds for a fully sized screenshot.
+```yaml
+trigger:
+  - platform: time_pattern
+    seconds: "*/15"
+    minutes: "*"
+    hours: "*"
+```
+
+Ideal conditions using a fast source and scaled down images may allow for 2-3 times per second.
+Enigma2 example: `http://enigma2/grab?format=png&mode=video&r=64`.
+When using multiple ZHA light entities, consider creating a ZHA group to off-load your ZigBee network. 
+```yaml
+trigger:
+  - platform: time_pattern
+    seconds: "*"
+    minutes: "*"
+    hours: "*"
+```
+
+
 ## Installation
 
 ### Using HACS
@@ -115,7 +149,3 @@ action:
       brightness_max: "{{ states('input_number.ambilight_brightness_max') }}"
 mode: single
 ```
-
-
-
-
