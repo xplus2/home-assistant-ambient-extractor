@@ -23,13 +23,6 @@ turn_on:
       example: /opt/images/logo.png
       selector:
         text:
-    ambient_extract_adb:
-      name: Hostname
-      description:
-        Pull adb Screenshot. Might take 15 seconds each.
-      example: emulator-1234
-      selector:
-        text:
     brightness_min:
       name: Auto Brightness (min)
       description:
