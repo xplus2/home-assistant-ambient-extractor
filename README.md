@@ -85,6 +85,9 @@ data_template:
   
   # 0-255, default: 100
   brightness_max: 70
+  
+  # Adjust RGB color temperature (experimental). -25 to +25
+  rgb_temperature: 2
 ```
 
 ### Using helper variables
@@ -104,9 +107,12 @@ data_template:
 
 ### Full automation YAML
 
-#### Using a fast image source
-```yaml
 
+#### Using a fast image source
+
+Two times per second, if screenshots can be accessed fast enough.
+
+```yaml
 alias: Ambient Light enigma2
 description: ""
 trigger:
@@ -115,50 +121,34 @@ trigger:
     minutes: "*"
     hours: "*"
 condition:
-  - condition: or
-    conditions:
-      - condition: state
-        entity_id: media_player.enigma2
-        state: "on"
-      - condition: state
-        entity_id: media_player.enigma2
-        state: playing
-      - condition: state
-        entity_id: media_player.enigma2
-        state: paused
+  - condition: state
+    entity_id: media_player.enigma2
+    state: playing
 action:
   - service: ambient_extractor.turn_on
     data_template:
-      ambient_extract_url: "http://enigma2/grab?format=png&mode=video&r=96"
+      ambient_extract_url: "http://enigma2/grab?format=png&mode=video&r=64"
       entity_id:
         - light.living_room_zha_group_0x0002
       transition: 0.3
       brightness_auto: true
-      brightness_mode: natural
-      brightness_min: "{{ states('input_number.ambilight_brightness_min') }}"
-      brightness_max: "{{ states('input_number.ambilight_brightness_max') }}"
   - delay:
       hours: 0
       minutes: 0
       seconds: 0
       milliseconds: 350
-    enabled: true
   - service: ambient_extractor.turn_on
     data_template:
-      ambient_extract_url: "http://enigma2/grab?format=png&mode=video&r=96"
+      ambient_extract_url: "http://enigma2/grab?format=png&mode=video&r=64"
       entity_id:
         - light.living_room_zha_group_0x0002
       transition: 0.3
       brightness_auto: true
-      brightness_mode: natural
-      brightness_min: "{{ states('input_number.ambilight_brightness_min') }}"
-      brightness_max: "{{ states('input_number.ambilight_brightness_max') }}"
 mode: single
 ```
 
 #### Using slower sources
 ```yaml
-
 alias: Ambient Light FireTV
 description: ""
 trigger:
@@ -171,7 +161,6 @@ action:
     data_template:
       ambient_extract_url: "{{ states.media_player.firetv.attributes.entity_picture }}"
       entity_id:
-        - light.living_room_zha_group_0x0002
         - light.living_room_floor_lamp
       transition: 2
       brightness_auto: true
