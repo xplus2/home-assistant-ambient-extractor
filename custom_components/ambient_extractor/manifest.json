@@ -1,9 +1,9 @@
 {
   "domain": "ambient_extractor",
   "name": "AmbientExtractor",
-  "version": "1.1",
+  "version": "1.2",
   "config_flow": false,
-  "documentation": "https://github.com/xplus2/home-assistant-integrations/",
+  "documentation": "https://github.com/xplus2/home-assistant-ambient-extractor/",
   "requirements": ["colorthief==0.2.1"],
   "codeowners": ["xplus2"]
 }
