@@ -44,8 +44,7 @@ trigger:
 1. Ensure that [HACS](https://github.com/hacs/integration) is installed.
 2. Add Custom repository `https://github.com/xplus2/home-assistant-ambient-extractor`. Category `Integration`.
 3. Install the "Ambient Extractor" integration.
-4. [Configure the integration](#configuration).
-5. Restart Home Assistant.
+4. Restart Home Assistant.
 
 ### Manual installation
 
