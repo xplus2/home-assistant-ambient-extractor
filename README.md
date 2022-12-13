@@ -1,5 +1,6 @@
 
 
+
 # Ambient Extractor
 
 Fork of [color_extractor](https://www.home-assistant.io/integrations/color_extractor/), adding automatic brightness.
@@ -7,11 +8,16 @@ Fork of [color_extractor](https://www.home-assistant.io/integrations/color_extra
 ### Service data attributes
 | Attribute | Optional | Type | Default | Description |
 |--|--|--|--|--|
+| ambient_extract_url | * | URI | - | The full URL (including schema, `http://`, `https://`) of the image to process
+| ambient_extract_path | * | String | - | The full path to the image file on local storage we’ll process
+| entity_id | Yes | String | - | The light(s) we’ll set color and/or brightness of
 | brightness_auto | Yes | Boolean | False | Detect and set brightness
 | brightness_mode | Yes | mean\|rms\|natural | mean | Brightness calculation method
 | brightness_min  | Yes | Int: 0-255 | 2 | Minimal brightness. `< 2` means off for most devices.
 | brightness_max  | Yes | Int: 0-255 | 70 | Maximal brightness, should be `> brightness_min`.
- 
+
+*) Either `ambient_extract_url`or `ambient_extract_path`needs to be set. 
+
 Besides `color_rgb`and `brightness`, feel free to set [generic light](https://www.home-assistant.io/integrations/light/) attributes. For a static brightness setting, don't enable `brightness_auto`, just add a `brightness: ` value.
 
 ### Automation trigger recommendations
