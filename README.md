@@ -10,7 +10,7 @@ Fork of [color_extractor](https://www.home-assistant.io/integrations/color_extra
 |--|--|--|--|--|
 | ambient_extract_url | * | URI | - | The full URL (including schema, `http://`, `https://`) of the image to process
 | ambient_extract_path | * | String | - | The full path to the image file on local storage we’ll process
-| entity_id | Yes | String | - | The light(s) we’ll set color and/or brightness of
+| entity_id | No | String | - | The light(s) we’ll set color and/or brightness of
 | brightness_auto | Yes | Boolean | False | Detect and set brightness
 | brightness_mode | Yes | mean\|rms\|natural | mean | Brightness calculation method
 | brightness_min  | Yes | Int: 0-255 | 2 | Minimal brightness. `< 2` means off for most devices.
