@@ -83,7 +83,7 @@ data_template:
   # 0-255, default: 2
   brightness_min: 2
   
-  # 0-255, default: 100
+  # 0-255, default: 70
   brightness_max: 70
   
   # Adjust RGB color temperature (experimental). -25 to +25
