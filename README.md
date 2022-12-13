@@ -34,13 +34,6 @@ trigger:
 Ideal conditions using a fast source and scaled down images may allow for 2-3 times per second.
 Enigma2 example: `http://enigma2/grab?format=png&mode=video&r=64`.
 When using multiple ZHA light entities, consider creating a ZHA group to off-load your ZigBee network. 
-```yaml
-trigger:
-  - platform: time_pattern
-    seconds: "*"
-    minutes: "*"
-    hours: "*"
-```
 
 
 ## Installation
