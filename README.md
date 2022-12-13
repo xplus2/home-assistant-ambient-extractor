@@ -2,8 +2,8 @@
 
 Fork of [color_extractor](https://www.home-assistant.io/integrations/color_extractor/), adding automatic brightness and rudimentary color correction.
 
-Like color_extractor, this integration will extract the predominant color and the overall brightness from a given image and apply them to a target light. 
-Useful as part of an automation.
+Like color_extractor, this integration will extract the predominant color from a given image and apply them to a target light. 
+Additionally, overall brightness can be calculated and applied within adjustable limits. Useful as part of an automation.
 
 ### Service data attributes
 | Attribute | Optional | Type | Default | Description |
