@@ -18,6 +18,8 @@ Fork of [color_extractor](https://www.home-assistant.io/integrations/color_extra
 
 *) Either `ambient_extract_url`or `ambient_extract_path`needs to be set. 
 
+**Please ensure any [external URLs](https://www.home-assistant.io/docs/configuration/basic/#allowlist_external_urls) or [external files](https://www.home-assistant.io/docs/configuration/basic/#allowlist_external_dirs) are authorized for use, you will receive error messages if this component is not allowed access to these external resources.**
+
 Besides `color_rgb`and `brightness`, feel free to set [generic light](https://www.home-assistant.io/integrations/light/) attributes. For a static brightness setting, don't enable `brightness_auto`, just add a `brightness: ` value.
 
 ### Automation trigger recommendations
