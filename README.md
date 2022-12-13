@@ -1,6 +1,3 @@
-
-
-
 # Ambient Extractor
 
 Fork of [color_extractor](https://www.home-assistant.io/integrations/color_extractor/), adding automatic brightness.
@@ -13,8 +10,9 @@ Fork of [color_extractor](https://www.home-assistant.io/integrations/color_extra
 | entity_id | No | String | - | The light(s) we’ll set color and/or brightness of
 | brightness_auto | Yes | Boolean | False | Detect and set brightness
 | brightness_mode | Yes | mean\|rms\|natural\|dominant | mean | Brightness calculation method. `mean` and `rms` use a grayscale image, `natural` uses perceived brightness, `dominant` the same color as for RGB (fastest).
-| brightness_min  | Yes | Int: 0-255 | 2 | Minimal brightness. `< 2` means off for most devices.
-| brightness_max  | Yes | Int: 0-255 | 70 | Maximal brightness, should be `> brightness_min`.
+| brightness_min  | Yes | Int: 0 to 255 | 2 | Minimal brightness. `< 2` means off for most devices.
+| brightness_max  | Yes | Int: 0 to 255 | 70 | Maximal brightness, should be `> brightness_min`.
+| rgb_temperature | Yes | Int: -25 to 25 | 0 | Apply color correction to RGB values. 0 = unchanged
 
 *) Either `ambient_extract_url`or `ambient_extract_path`needs to be set. 
 

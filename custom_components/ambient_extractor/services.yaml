@@ -59,4 +59,11 @@ turn_on:
             - rms
             - natural
             - dominant
-
+    rgb_temperature:
+      name: RGB Color Temperature
+      description: Let colors be warmer or colder -3<x<+3
+      example: 0
+      selector:
+        number:
+          min: -25
+          max: 25
