@@ -169,8 +169,5 @@ action:
         - light.living_room_floor_lamp
       transition: 2
       brightness_auto: true
-      brightness_mode: natural
-      brightness_min: "{{ states('input_number.ambilight_brightness_min') }}"
-      brightness_max: "{{ states('input_number.ambilight_brightness_max') }}"
 mode: single
 ```
