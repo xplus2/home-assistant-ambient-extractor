@@ -1,0 +1,9 @@
+{
+  "domain": "ambient_extractor",
+  "name": "AmbientExtractor",
+  "version": "1.0",
+  "config_flow": false,
+  "documentation": "https://www.home-assistant.io/integrations/ambient_extractor",
+  "requirements": ["colorthief==0.2.1"],
+  "codeowners": ["@GenericStudent"]
+}

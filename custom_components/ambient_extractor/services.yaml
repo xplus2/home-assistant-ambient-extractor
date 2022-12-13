@@ -1,0 +1,67 @@
+turn_on:
+  name: Turn on
+  description:
+    Set the light RGB to the predominant color found in the image provided by
+    URL or file path.
+  target:
+    entity:
+      domain: light
+  fields:
+    ambient_extract_url:
+      name: URL
+      description:
+        The URL of the image we want to extract RGB values from. Must be allowed
+        in allowlist_external_urls.
+      example: https://www.example.com/images/logo.png
+      selector:
+        text:
+    ambient_extract_path:
+      name: Path
+      description:
+        The full system path to the image we want to extract RGB values from.
+        Must be allowed in allowlist_external_dirs.
+      example: /opt/images/logo.png
+      selector:
+        text:
+    ambient_extract_adb:
+      name: Hostname
+      description:
+        Pull adb Screenshot. Might take 15 seconds each.
+      example: emulator-1234
+      selector:
+        text:
+    brightness_min:
+      name: Auto Brightness (min)
+      description:
+        Auto Brightness lower boundary
+      example: 5
+      selector:
+        number:
+          min: 0
+          max: 255
+    brightness_max:
+      name: Auto Brightness (max)
+      description:
+        Auto Brightness upper boundary
+      example: 25
+      selector:
+        number:
+          min: 0
+          max: 255
+    brightness_auto:
+      name: Auto Brightness on/off
+      description: Adjust Brightness according to the image.
+      example: True
+      selector:
+        boolean:
+    brightness_mode:
+      name: Brightness Mode
+      description: How to calculate brightness
+      example: natural
+      selector:
+        select:
+          options:
+            - mean
+            - rms
+            - natural
+
