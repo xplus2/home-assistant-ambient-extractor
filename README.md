@@ -98,9 +98,10 @@ data_template:
 
 ### Full automation YAML
 
+#### Using a fast image source
 ```yaml
 
-alias: Ambilight enigma2
+alias: Ambient Light enigma2
 description: ""
 trigger:
   - platform: time_pattern
@@ -142,6 +143,31 @@ action:
       entity_id:
         - light.living_room_zha_group_0x0002
       transition: 0.3
+      brightness_auto: true
+      brightness_mode: natural
+      brightness_min: "{{ states('input_number.ambilight_brightness_min') }}"
+      brightness_max: "{{ states('input_number.ambilight_brightness_max') }}"
+mode: single
+```
+
+#### Using slower sources
+```yaml
+
+alias: Ambient Light FireTV
+description: ""
+trigger:
+  - platform: time_pattern
+    seconds: "*/5"
+    minutes: "*"
+    hours: "*"
+action:
+  - service: ambient_extractor.turn_on
+    data_template:
+      ambient_extract_url: "{{ states.media_player.firetv.attributes.entity_picture }}"
+      entity_id:
+        - light.living_room_zha_group_0x0002
+        - light.living_room_floor_lamp
+      transition: 2
       brightness_auto: true
       brightness_mode: natural
       brightness_min: "{{ states('input_number.ambilight_brightness_min') }}"
