@@ -150,10 +150,8 @@ mode: single
 alias: Ambient Light FireTV
 description: ""
 trigger:
-  - platform: time_pattern
-    seconds: "*/5"
-    minutes: "*"
-    hours: "*"
+  - platform: state
+    entity_id: media_player.firetv
 action:
   - service: ambient_extractor.turn_on
     data_template:
