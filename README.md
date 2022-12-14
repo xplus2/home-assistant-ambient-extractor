@@ -32,6 +32,8 @@ trigger:
     seconds: "*/15"
     minutes: "*"
     hours: "*"
+  - platform: state
+    entity_id: media_player.firetv
 ```
 
 Ideal conditions using a fast source and scaled down images may allow for 2-3 times per second.
