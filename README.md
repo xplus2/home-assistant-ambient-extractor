@@ -21,7 +21,7 @@ Additionally, overall brightness can be calculated and applied within adjustable
 
 **Please ensure any [external URLs](https://www.home-assistant.io/docs/configuration/basic/#allowlist_external_urls) or [external files](https://www.home-assistant.io/docs/configuration/basic/#allowlist_external_dirs) are authorized for use, you will receive error messages if this component is not allowed access to these external resources.**
 
-Besides `color_rgb`and `brightness`, feel free to set [generic light](https://www.home-assistant.io/integrations/light/) attributes. For a static brightness setting, don't enable `brightness_auto`, just add a `brightness: ` value.
+Besides `color_rgb`and `brightness`, feel free to set [generic light](https://www.home-assistant.io/integrations/light/) attributes. For a static brightness setting, don't enable `brightness_auto`, just add a `brightness: ` or `brightness_pct:` value.
 
 ### Automation trigger recommendations
 
