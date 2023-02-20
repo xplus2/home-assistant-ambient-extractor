@@ -32,7 +32,6 @@ from .const import (
     ATTR_BRIGHTNESS_MODE,
     ATTR_BRIGHTNESS_MIN,
     ATTR_BRIGHTNESS_MAX,
-    ATTR_RGB_TEMPERATURE,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -49,7 +48,6 @@ SERVICE_SCHEMA = vol.All(
             vol.Optional(ATTR_BRIGHTNESS_MODE, default="mean"): cv.string,
             vol.Optional(ATTR_BRIGHTNESS_MIN, default=2): cv.positive_int,
             vol.Optional(ATTR_BRIGHTNESS_MAX, default=70): cv.positive_int,
-            vol.Optional(ATTR_RGB_TEMPERATURE, default=0): cv.match_all,
         }
     ),
 )
@@ -106,7 +104,6 @@ async def async_setup(hass: HomeAssistant, hass_config: ConfigType) -> bool:
         br_max = 70
         check_brightness = True
         br_mode = "mean"
-        rgb_temperature = 0
         if ATTR_BRIGHTNESS_MIN in service_data:
             br_min = service_data.pop(ATTR_BRIGHTNESS_MIN)
         if ATTR_BRIGHTNESS_MAX in service_data:
@@ -115,8 +112,6 @@ async def async_setup(hass: HomeAssistant, hass_config: ConfigType) -> bool:
             check_brightness = service_data.pop(ATTR_BRIGHTNESS_AUTO)
         if ATTR_BRIGHTNESS_MODE in service_data:
             br_mode = service_data.pop(ATTR_BRIGHTNESS_MODE)
-        if ATTR_RGB_TEMPERATURE in service_data:
-            rgb_temperature = service_data.pop(ATTR_RGB_TEMPERATURE)
 
         try:
             if ATTR_URL in service_data:
@@ -137,7 +132,6 @@ async def async_setup(hass: HomeAssistant, hass_config: ConfigType) -> bool:
             if check_brightness:
                 brightness = colorset["brightness"]
 
-
         except UnidentifiedImageError as ex:
             _LOGGER.error(
                 "Bad image from %s '%s' provided, are you sure it's an image? %s",
@@ -146,15 +140,6 @@ async def async_setup(hass: HomeAssistant, hass_config: ConfigType) -> bool:
                 ex,
             )
             return
-
-        if color:
-            """Apply RGB temperature"""
-            tempered_color = (
-                color[0] * (1 + 0.14 * rgb_temperature),
-                color[1] * (1 - 0.01 * rgb_temperature),
-                color[2] * (1 - 0.13 * rgb_temperature)
-            )
-            service_data[ATTR_RGB_COLOR] = tempered_color
 
         if brightness:
             """Apply min and max brightness"""

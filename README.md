@@ -15,7 +15,6 @@ Additionally, overall brightness can be calculated and applied within adjustable
 | brightness_mode | Yes | mean rms natural dominant | mean | Brightness calculation method. `mean` and `rms` use a grayscale image, `natural` uses perceived brightness, `dominant` the same color as for RGB (fastest).
 | brightness_min  | Yes | Int: 0 to 255 | 2 | Minimal brightness. `< 2` means off for most devices.
 | brightness_max  | Yes | Int: 0 to 255 | 70 | Maximal brightness, should be `> brightness_min`.
-| rgb_temperature | Yes | Int: -25 to 25 | 0 | Apply color correction to RGB values. 0 = unchanged
 
 *) Either `ambient_extract_url`or `ambient_extract_path`needs to be set. 
 
@@ -83,9 +82,6 @@ data_template:
   
   # 0-255, default: 70
   brightness_max: 70
-  
-  # Adjust RGB color temperature (experimental). -25 to +25
-  rgb_temperature: 2
 ```
 
 ### Using helper variables

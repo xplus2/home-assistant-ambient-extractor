@@ -7,8 +7,6 @@ ATTR_BRIGHTNESS_MODE = "brightness_mode"
 ATTR_BRIGHTNESS_MIN = "brightness_min"
 ATTR_BRIGHTNESS_MAX = "brightness_max"
 
-ATTR_RGB_TEMPERATURE = "rgb_temperature"
-
 DOMAIN = "ambient_extractor"
 
 SERVICE_TURN_ON = "turn_on"
