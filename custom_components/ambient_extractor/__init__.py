@@ -141,6 +141,9 @@ async def async_setup(hass: HomeAssistant, hass_config: ConfigType) -> bool:
             )
             return
 
+        if color:
+            service_data[ATTR_RGB_COLOR] = tempered_color
+
         if brightness:
             """Apply min and max brightness"""
             if br_min >= br_max:

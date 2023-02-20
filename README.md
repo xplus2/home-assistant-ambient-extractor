@@ -1,6 +1,6 @@
 # Ambient Extractor
 
-Fork of [color_extractor](https://www.home-assistant.io/integrations/color_extractor/), adding automatic brightness and rudimentary color correction.
+Fork of [color_extractor](https://www.home-assistant.io/integrations/color_extractor/), adding automatic brightness.
 
 Like color_extractor, this integration will extract the predominant color from a given image and apply it to a target light. 
 Additionally, overall brightness can be calculated and applied within adjustable limits. Useful as part of an automation.
