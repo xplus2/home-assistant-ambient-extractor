@@ -1,3 +1,9 @@
+# v0.4
+
+Released 2023-02-20
+
+- Removed experimental rgb_temperature
+
 # v0.3
 
 Released 2022-12-13
