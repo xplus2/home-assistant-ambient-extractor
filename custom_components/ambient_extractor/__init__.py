@@ -32,6 +32,11 @@ from .const import (
     ATTR_BRIGHTNESS_MODE,
     ATTR_BRIGHTNESS_MIN,
     ATTR_BRIGHTNESS_MAX,
+
+    ATTR_CROP_X,
+    ATTR_CROP_Y,
+    ATTR_CROP_W,
+    ATTR_CROP_H,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -48,6 +53,12 @@ SERVICE_SCHEMA = vol.All(
             vol.Optional(ATTR_BRIGHTNESS_MODE, default="mean"): cv.string,
             vol.Optional(ATTR_BRIGHTNESS_MIN, default=2): cv.positive_int,
             vol.Optional(ATTR_BRIGHTNESS_MAX, default=70): cv.positive_int,
+
+            vol.Optional(ATTR_CROP_X, default=0): cv.positive_int,
+            vol.Optional(ATTR_CROP_Y, default=0): cv.positive_int,
+            vol.Optional(ATTR_CROP_W, default=0): cv.positive_int,
+            vol.Optional(ATTR_CROP_H, default=0): cv.positive_int,
+
         }
     ),
 )
@@ -71,25 +82,34 @@ def _get_color(file_handler) -> tuple:
     return color
 
 
-def _get_brightness(file_handler, br_mode, color):
+def _get_brightness(file_handler, br_mode, color, crop_area):
+
+    # No crop support for "dominant"
+    if br_mode == "dominant":
+        r, g, b = color
+        return (r + g + b) / 3
+
+    im = Image.open(file_handler)
+    if crop_area['active']:
+        im_width, im_height = im.size
+        im = im.crop((
+            math.floor(im_width / 100 * crop_area['x']),
+            math.floor(im_height / 100 * crop_area['y']),
+            math.floor(im_width / 100 * (crop_area['x'] + crop_area['w'])),
+            math.floor(im_width / 100 * (crop_area['y'] + crop_area['h'])),
+        ))
+
     if br_mode == "natural":
-        im = Image.open(file_handler)
         stat = ImageStat.Stat(im)
         r,g,b = stat.mean
         return math.sqrt(0.241*(r**2) + 0.691*(g**2) + 0.068*(b**2))
 
     if br_mode == "rms":
-        im = Image.open(file_handler).convert('L')
-        stat = ImageStat.Stat(im)
+        stat = ImageStat.Stat(im.convert('L'))
         return stat.rms[0]
 
-    if br_mode == "dominant":
-        r, g, b = color
-        return (r + g + b) / 3
-
     # mean
-    im = Image.open(file_handler).convert('L')
-    stat = ImageStat.Stat(im)
+    stat = ImageStat.Stat(im.convert('L'))
     return stat.mean[0]
 
 
@@ -113,19 +133,44 @@ async def async_setup(hass: HomeAssistant, hass_config: ConfigType) -> bool:
         if ATTR_BRIGHTNESS_MODE in service_data:
             br_mode = service_data.pop(ATTR_BRIGHTNESS_MODE)
 
+        crop_area = {
+            'active': False,
+            'x': 0,
+            'y': 0,
+            'w': 0,
+            'h': 0,
+        }
+        if ATTR_CROP_X in service_data:
+            crop_area['x'] = service_data.pop(ATTR_CROP_X)
+        if ATTR_CROP_Y in service_data:
+            crop_area['y'] = service_data.pop(ATTR_CROP_Y)
+        if ATTR_CROP_W in service_data:
+            crop_area['w'] = service_data.pop(ATTR_CROP_W)
+        if ATTR_CROP_H in service_data:
+            crop_area['h'] = service_data.pop(ATTR_CROP_H)
+
+        # Don't crop if height or width == 0
+        if crop_area['w'] > 0 and crop_area['h'] > 0:
+            crop_area['active'] = True
+
+            if crop_area['x'] + crop_area['w'] > 100:
+                crop_area['w'] = 100 - crop_area['x']
+            if crop_area['y'] + crop_area['h'] > 100:
+                crop_area['h'] = 100 - crop_area['y']
+
         try:
             if ATTR_URL in service_data:
                 image_type = "URL"
                 image_reference = service_data.pop(ATTR_URL)
                 colorset = await async_extract_color_from_url(
-                    image_reference, check_brightness, br_mode
+                    image_reference, check_brightness, br_mode, crop_area
                 )
 
             elif ATTR_PATH in service_data:
                 image_type = "file path"
                 image_reference = service_data.pop(ATTR_PATH)
                 colorset = await hass.async_add_executor_job(
-                    extract_color_from_path, image_reference, check_brightness, br_mode
+                    extract_color_from_path, image_reference, check_brightness, br_mode, crop_area
                 )
 
             color = colorset["color"]
@@ -166,8 +211,7 @@ async def async_setup(hass: HomeAssistant, hass_config: ConfigType) -> bool:
         schema=SERVICE_SCHEMA,
     )
 
-
-    async def async_extract_color_from_url(url, check_brightness, br_mode):
+    async def async_extract_color_from_url(url, check_brightness, br_mode, crop_area):
         """Handle call for URL based image."""
         if not hass.config.is_allowed_external_url(url):
             _LOGGER.error(
@@ -197,14 +241,14 @@ async def async_setup(hass: HomeAssistant, hass_config: ConfigType) -> bool:
             color = _get_color(_file)
             brightness = 0
             if check_brightness:
-                brightness = _get_brightness(_file, br_mode, color)
+                brightness = _get_brightness(_file, br_mode, color, crop_area)
 
             return {
                 "color": color,
                 "brightness": brightness
             }
 
-    def extract_color_from_path(file_path, check_brightness, br_mode):
+    def extract_color_from_path(file_path, check_brightness, br_mode, crop_area):
         """Handle call for local file based image."""
         if not hass.config.is_allowed_path(file_path):
             _LOGGER.error(
@@ -219,7 +263,7 @@ async def async_setup(hass: HomeAssistant, hass_config: ConfigType) -> bool:
         color = _get_color(_file)
         brightness = 0
         if check_brightness:
-            brightness = _get_brightness(_file, br_mode, color)
+            brightness = _get_brightness(_file, br_mode, color, crop_area)
 
         return {
             "color": color,

@@ -15,6 +15,10 @@ Additionally, overall brightness can be calculated and applied within adjustable
 | brightness_mode | Yes | mean rms natural dominant | mean | Brightness calculation method. `mean` and `rms` use a grayscale image, `natural` uses perceived brightness, `dominant` the same color as for RGB (fastest).
 | brightness_min  | Yes | Int: 0 to 255 | 2 | Minimal brightness. `< 2` means off for most devices.
 | brightness_max  | Yes | Int: 0 to 255 | 70 | Maximal brightness, should be `> brightness_min`.
+| crop_offset_left | Yes | Int: 0 to 99 | 0 | Crop area: Left offset in % of image width. Default: 0
+| crop_offset_top | Yes | Int: 0 to 99 | 0 | Crop area: Top offset in % of image height. Default: 0
+| crop_width | Yes | Int: 0 to 100 | 0 | Crop area: Width. Default: 0 (= no cropping)
+| crop_height | Yes | Int: 0 to 100 | 0 | Crop area: Height. Default: 0 (= no cropping)
 
 *) Either `ambient_extract_url`or `ambient_extract_path`needs to be set. 
 
@@ -104,7 +108,44 @@ data_template:
 
 #### Using a fast image source
 
-Two times per second, if screenshots can be accessed fast enough.
+Two times per second, if screenshots can be accessed fast enough. Tested with OpenATV on Vu+ Uno 4K SE.
+
+```yaml
+alias: Ambient Light enigma2
+description: ""
+trigger:
+  - platform: time_pattern
+    seconds: "*"
+    minutes: "*"
+    hours: "*"
+condition:
+  - condition: state
+    entity_id: media_player.enigma2
+    state: playing
+action:
+  - service: ambient_extractor.turn_on
+    data_template:
+      ambient_extract_url: "http://enigma2/grab?format=png&mode=video&r=96"
+      entity_id:
+        - light.living_room_zha_group_0x0001
+      transition: 0.3
+      brightness_auto: true
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 350
+  - service: ambient_extractor.turn_on
+    data_template:
+      ambient_extract_url: "http://enigma2/grab?format=png&mode=video&r=96"
+      entity_id:
+        - light.living_room_zha_group_0x0001
+      transition: 0.3
+      brightness_auto: true
+mode: single
+```
+
+Left, right and ceiling using crop_*.
 
 ```yaml
 alias: Ambient Light enigma2
@@ -123,21 +164,45 @@ action:
     data_template:
       ambient_extract_url: "http://enigma2/grab?format=png&mode=video&r=64"
       entity_id:
-        - light.living_room_zha_group_0x0002
-      transition: 0.3
+        - light.living_room_tv_left
+      transition: 0.6
       brightness_auto: true
+      crop_offset_left: 0
+      crop_offset_top: 0
+      crop_width: 50
+      crop_height: 100
   - delay:
       hours: 0
       minutes: 0
       seconds: 0
-      milliseconds: 350
+      milliseconds: 200
   - service: ambient_extractor.turn_on
     data_template:
       ambient_extract_url: "http://enigma2/grab?format=png&mode=video&r=64"
       entity_id:
-        - light.living_room_zha_group_0x0002
-      transition: 0.3
+        - light.living_room_tv_right
+      transition: 0.6
       brightness_auto: true
+      crop_offset_left: 50
+      crop_offset_top: 0
+      crop_width: 50
+      crop_height: 100
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 200
+  - service: ambient_extractor.turn_on
+    data_template:
+      ambient_extract_url: "http://enigma2/grab?format=png&mode=video&r=64"
+      entity_id:
+        - light.living_room_ceiling
+      transition: 0.6
+      brightness_auto: true
+      crop_offset_left: 0
+      crop_offset_top: 0
+      crop_width: 100
+      crop_height: 35
 mode: single
 ```
 

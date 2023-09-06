@@ -59,3 +59,36 @@ turn_on:
             - rms
             - natural
             - dominant
+
+    crop_x:
+      name: Crop image, left offset
+      description: In % of the original width
+      example: 0
+      selector:
+        number:
+          min: 0
+          max: 99
+    crop_y:
+      name: Crop image, top offset
+      description: In % of the original height
+      example: 0
+      selector:
+        number:
+          min: 0
+          max: 99
+    crop_w:
+      name: Crop image, width
+      description: In % of the original width. 0 means full screen.
+      example: 0
+      selector:
+        number:
+          min: 0
+          max: 99
+    crop_h:
+      name: Crop image, height
+      description: In % of the original width. 0 means full screen.
+      example: 0
+      selector:
+        number:
+          min: 0
+          max: 99
