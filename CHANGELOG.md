@@ -1,3 +1,6 @@
+# v0.5.1
+Fixed services.yaml
+
 # v0.5
 New features: 
 - Limit detection to an area of the source image.
