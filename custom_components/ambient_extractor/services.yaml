@@ -60,7 +60,7 @@ turn_on:
             - natural
             - dominant
 
-    crop_offset_left:
+    crop_left:
       name: Crop image, left offset
       description: In % of the original width
       example: 0
@@ -68,7 +68,7 @@ turn_on:
         number:
           min: 0
           max: 99
-    crop_offset_top:
+    crop_top:
       name: Crop image, top offset
       description: In % of the original height
       example: 0

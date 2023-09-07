@@ -9,6 +9,7 @@ import async_timeout
 from colorthief import ColorThief
 import voluptuous as vol
 import math
+from tempfile import TemporaryFile
 
 from homeassistant.components.light import (
     ATTR_RGB_COLOR,
@@ -28,6 +29,7 @@ from .const import (
     ATTR_URL,
     DOMAIN,
     SERVICE_TURN_ON,
+
     ATTR_BRIGHTNESS_AUTO,
     ATTR_BRIGHTNESS_MODE,
     ATTR_BRIGHTNESS_MIN,
@@ -72,7 +74,13 @@ def _get_file(file_path):
     return file_path
 
 
-def _get_color(file_handler) -> tuple:
+def _get_color_from_image(im) -> tuple:
+    file_handler = TemporaryFile()
+    im.save(file_handler, "PNG")
+    return _get_color_from_file(file_handler)
+
+
+def _get_color_from_file(file_handler) -> tuple:
     """Given an image file, extract the predominant color from it."""
     color_thief = ColorThief(file_handler)
 
@@ -82,13 +90,7 @@ def _get_color(file_handler) -> tuple:
     return color
 
 
-def _get_brightness(file_handler, br_mode, color, crop_area):
-
-    # No crop support for "dominant"
-    if br_mode == "dominant":
-        r, g, b = color
-        return (r + g + b) / 3
-
+def _get_cropped_image(file_handler, crop_area):
     im = Image.open(file_handler)
     if crop_area['active']:
         im_width, im_height = im.size
@@ -98,6 +100,13 @@ def _get_brightness(file_handler, br_mode, color, crop_area):
             math.floor(im_width / 100 * (crop_area['x'] + crop_area['w'])),
             math.floor(im_width / 100 * (crop_area['y'] + crop_area['h'])),
         ))
+    return im
+
+
+def _get_brightness(im, br_mode, color):
+    if br_mode == "dominant":
+        r, g, b = color
+        return (r + g + b) / 3
 
     if br_mode == "natural":
         stat = ImageStat.Stat(im)
@@ -238,10 +247,12 @@ async def async_setup(hass: HomeAssistant, hass_config: ConfigType) -> bool:
             _file.name = "ambient_extractor.jpg"
             _file.seek(0)
 
-            color = _get_color(_file)
+            im = _get_cropped_image(_file, crop_area)
+
+            color = _get_color_from_image(im) if crop_area['active'] else _get_color_from_file(_file)
             brightness = 0
             if check_brightness:
-                brightness = _get_brightness(_file, br_mode, color, crop_area)
+                brightness = _get_brightness(im, br_mode, color)
 
             return {
                 "color": color,
@@ -258,12 +269,13 @@ async def async_setup(hass: HomeAssistant, hass_config: ConfigType) -> bool:
             return None
 
         _LOGGER.debug("Getting predominant RGB from file path '%s'", file_path)
-
         _file = _get_file(file_path)
-        color = _get_color(_file)
+        im = _get_cropped_image(_file, crop_area)
+        color = _get_color_from_image(im) if crop_area['active'] else _get_color_from_file(_file)
+
         brightness = 0
         if check_brightness:
-            brightness = _get_brightness(_file, br_mode, color, crop_area)
+            brightness = _get_brightness(im, br_mode, color)
 
         return {
             "color": color,

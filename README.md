@@ -15,8 +15,8 @@ Additionally, overall brightness can be calculated and applied within adjustable
 | brightness_mode | Yes | mean rms natural dominant | mean | Brightness calculation method. `mean` and `rms` use a grayscale image, `natural` uses perceived brightness, `dominant` the same color as for RGB (fastest).
 | brightness_min  | Yes | Int: 0 to 255 | 2 | Minimal brightness. `< 2` means off for most devices.
 | brightness_max  | Yes | Int: 0 to 255 | 70 | Maximal brightness, should be `> brightness_min`.
-| crop_offset_left | Yes | Int: 0 to 99 | 0 | Crop area: Left offset in % of image width. Default: 0
-| crop_offset_top | Yes | Int: 0 to 99 | 0 | Crop area: Top offset in % of image height. Default: 0
+| crop_left | Yes | Int: 0 to 99 | 0 | Crop area: Left offset in % of image width. Default: 0
+| crop_top | Yes | Int: 0 to 99 | 0 | Crop area: Top offset in % of image height. Default: 0
 | crop_width | Yes | Int: 0 to 100 | 0 | Crop area: Width. Default: 0 (= no cropping)
 | crop_height | Yes | Int: 0 to 100 | 0 | Crop area: Height. Default: 0 (= no cropping)
 
@@ -167,8 +167,8 @@ action:
         - light.living_room_tv_left
       transition: 0.6
       brightness_auto: true
-      crop_offset_left: 0
-      crop_offset_top: 0
+      crop_left: 0
+      crop_top: 0
       crop_width: 50
       crop_height: 100
   - delay:
@@ -183,8 +183,8 @@ action:
         - light.living_room_tv_right
       transition: 0.6
       brightness_auto: true
-      crop_offset_left: 50
-      crop_offset_top: 0
+      crop_left: 50
+      crop_top: 0
       crop_width: 50
       crop_height: 100
   - delay:
@@ -199,8 +199,8 @@ action:
         - light.living_room_ceiling
       transition: 0.6
       brightness_auto: true
-      crop_offset_left: 0
-      crop_offset_top: 0
+      crop_left: 0
+      crop_top: 0
       crop_width: 100
       crop_height: 35
 mode: single

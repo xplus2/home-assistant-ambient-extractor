@@ -10,9 +10,9 @@ ATTR_BRIGHTNESS_MAX = "brightness_max"
 
 # Image cropping
 # left offset in % of source width
-ATTR_CROP_X = "crop_offset_left"
+ATTR_CROP_X = "crop_left"
 # right offset in % of source height
-ATTR_CROP_Y = "crop_offset_top"
+ATTR_CROP_Y = "crop_top"
 # width in % of source width, 0 means full image
 ATTR_CROP_W = "crop_width"
 # height in % of source height, 0 means full image

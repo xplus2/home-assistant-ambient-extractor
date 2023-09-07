@@ -1,17 +1,20 @@
+# v0.5.2
+Expanded crop functionality to color detection.
+Changed "crop_offset_left" to "offset_left".
+Changed "crop_offset_top" to "offset_top".
+
 # v0.5.1
 Fixed services.yaml
 
 # v0.5
 New features: 
-- Limit detection to an area of the source image.
+- Limit brightness detection to an area of the source image.
 
   Configuration:
   - crop_offset_left = [0-100] in % width; default = 0
   - crop_offset_top = [0-100] in % height; default = 0
   - crop_width = [0-100] in % width; default = 0 == full image
   - crop_height = [ß-100] in % height; default = 0 == full image
-
-Poor man's lamp positioning? Yes. Very poor.
 
 # v0.4
 
