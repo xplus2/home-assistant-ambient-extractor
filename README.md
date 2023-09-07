@@ -11,6 +11,7 @@ Additionally, overall brightness can be calculated and applied within adjustable
 | ambient_extract_url | * | URI | - | The full URL (including schema, `http://`, `https://`) of the image to process
 | ambient_extract_path | * | String | - | The full path to the image file on local storage we’ll process
 | entity_id | No | String | - | The light(s) we’ll set color and/or brightness of
+| color_temperature | Yes | Int: 1.000 to 10.000 Kelvin in steps of 500. Default: 6700 K
 | brightness_auto | Yes | Boolean | False | Detect and set brightness
 | brightness_mode | Yes | mean rms natural dominant | mean | Brightness calculation method. `mean` and `rms` use a grayscale image, `natural` uses perceived brightness, `dominant` the same color as for RGB (fastest).
 | brightness_min  | Yes | Int: 0 to 255 | 2 | Minimal brightness. `< 2` means off for most devices.
@@ -60,7 +61,7 @@ When using multiple ZHA light entities, consider creating a ZHA group to off-loa
 3. Restart Home Assistant.
 
 ## Configuration
-Add the following line to your `configuration.yaml`
+Add the following line to your `configuration.yaml` (not needed when using HACS):
 
     ambient_extractor:
 
@@ -97,11 +98,14 @@ data_template:
   entity_id:
     - light.living_room_zha_group_0x0002
   transition: 0.3
+  color_temperature: "{{ states('input_number.ambilight_color_temperature') }}"
   brightness_auto: true
   brightness_mode: natural
   brightness_min: "{{ states('input_number.ambilight_brightness_min') }}"
   brightness_max: "{{ states('input_number.ambilight_brightness_max') }}"
 ```
+Create `ambilight_color_temperature` as Number from 1.000 to 10.000 with a step size of 500.
+
 
 ### Full automation YAML
 
@@ -169,7 +173,7 @@ action:
       brightness_auto: true
       crop_left: 0
       crop_top: 0
-      crop_width: 50
+      crop_width: 25
       crop_height: 100
   - delay:
       hours: 0
@@ -183,9 +187,8 @@ action:
         - light.living_room_tv_right
       transition: 0.6
       brightness_auto: true
-      crop_left: 50
-      crop_top: 0
-      crop_width: 50
+      crop_left: 75
+      crop_width: 25
       crop_height: 100
   - delay:
       hours: 0
@@ -199,12 +202,12 @@ action:
         - light.living_room_ceiling
       transition: 0.6
       brightness_auto: true
-      crop_left: 0
-      crop_top: 0
       crop_width: 100
       crop_height: 35
 mode: single
 ```
+
+`crop_width` and `crop_height` need values > 0 or cropping is disabled.
 
 #### Using slower sources
 ```yaml
@@ -221,5 +224,6 @@ action:
         - light.living_room_floor_lamp
       transition: 2
       brightness_auto: true
+      color_temperature: 5000
 mode: single
 ```

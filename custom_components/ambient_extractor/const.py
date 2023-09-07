@@ -1,4 +1,8 @@
 """Constants for the ambient_extractor component."""
+DOMAIN = "ambient_extractor"
+SERVICE_TURN_ON = "turn_on"
+
+# Image sources
 ATTR_PATH = "ambient_extract_path"
 ATTR_URL = "ambient_extract_url"
 
@@ -18,6 +22,7 @@ ATTR_CROP_W = "crop_width"
 # height in % of source height, 0 means full image
 ATTR_CROP_H = "crop_height"
 
-DOMAIN = "ambient_extractor"
+# Color temperature
+ATTR_COLOR_TEMPERATURE = "color_temperature"
 
-SERVICE_TURN_ON = "turn_on"
+

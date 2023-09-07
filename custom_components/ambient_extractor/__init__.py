@@ -29,6 +29,7 @@ from .const import (
     ATTR_URL,
     DOMAIN,
     SERVICE_TURN_ON,
+    ATTR_COLOR_TEMPERATURE,
 
     ATTR_BRIGHTNESS_AUTO,
     ATTR_BRIGHTNESS_MODE,
@@ -51,6 +52,8 @@ SERVICE_SCHEMA = vol.All(
             **LIGHT_TURN_ON_SCHEMA,
             vol.Exclusive(ATTR_PATH, "ambient_extractor"): cv.isfile,
             vol.Exclusive(ATTR_URL, "ambient_extractor"): cv.url,
+
+            vol.Optional(ATTR_COLOR_TEMPERATURE, default=False): cv.positive_int,
             vol.Optional(ATTR_BRIGHTNESS_AUTO, default=False): cv.boolean,
             vol.Optional(ATTR_BRIGHTNESS_MODE, default="mean"): cv.string,
             vol.Optional(ATTR_BRIGHTNESS_MIN, default=2): cv.positive_int,
@@ -101,6 +104,40 @@ def _get_cropped_image(file_handler, crop_area):
             math.floor(im_width / 100 * (crop_area['y'] + crop_area['h'])),
         ))
     return im
+
+
+def _apply_color_temperature(color, color_temperature) -> tuple:
+    # Do not touch the default
+    if color_temperature == 6700:
+        return color
+
+    r, g, b = color
+    kelvin_table = {
+        1000: (255,56,0),
+        1500: (255,109,0),
+        2000: (255,137,18),
+        2500: (255,161,72),
+        3000: (255,180,107),
+        3500: (255,196,137),
+        4000: (255,209,163),
+        4500: (255,219,186),
+        5000: (255,228,206),
+        5500: (255,236,224),
+        6000: (255,243,239),
+        6500: (255,249,253),
+        7000: (245,243,255),
+        7500: (235,238,255),
+        8000: (227,233,255),
+        8500: (220,229,255),
+        9000: (214,225,255),
+        9500: (208,222,255),
+        10000: (204,219,255)}
+    cr, cg, cb = kelvin_table[color_temperature]
+    return (
+        r * (cr / 255.0),
+        g * (cg / 255.0),
+        b * (cb / 255.0)
+    )
 
 
 def _get_brightness(im, br_mode, color):
@@ -158,10 +195,13 @@ async def async_setup(hass: HomeAssistant, hass_config: ConfigType) -> bool:
         if ATTR_CROP_H in service_data:
             crop_area['h'] = service_data.pop(ATTR_CROP_H)
 
+        color_temperature = 6700
+        if ATTR_COLOR_TEMPERATURE in service_data:
+            color_temperature = service_data.pop(ATTR_COLOR_TEMPERATURE)
+
         # Don't crop if height or width == 0
         if crop_area['w'] > 0 and crop_area['h'] > 0:
             crop_area['active'] = True
-
             if crop_area['x'] + crop_area['w'] > 100:
                 crop_area['w'] = 100 - crop_area['x']
             if crop_area['y'] + crop_area['h'] > 100:
@@ -196,6 +236,7 @@ async def async_setup(hass: HomeAssistant, hass_config: ConfigType) -> bool:
             return
 
         if color:
+            color = _apply_color_temperature(color, color_temperature)
             service_data[ATTR_RGB_COLOR] = color
 
         if brightness:

@@ -1,3 +1,10 @@
+# v0.6
+New features:
+- color_temperature
+  When using a receiver or other player as source, apply the tv's color temperature.
+
+  Configuration:
+  - color_temperature = []
 # v0.5.2
 Expanded crop functionality to color detection.
 Changed "crop_offset_left" to "offset_left".

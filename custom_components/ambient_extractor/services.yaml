@@ -68,6 +68,8 @@ turn_on:
         number:
           min: 0
           max: 99
+          step: 1
+          unit_of_measurement: %
     crop_top:
       name: Crop image, top offset
       description: In % of the original height
@@ -76,6 +78,8 @@ turn_on:
         number:
           min: 0
           max: 99
+          step: 1
+          unit_of_measurement: %
     crop_width:
       name: Crop image, width
       description: In % of the original width. 0 means full screen.
@@ -84,6 +88,8 @@ turn_on:
         number:
           min: 0
           max: 99
+          step: 1
+          unit_of_measurement: %
     crop_height:
       name: Crop image, height
       description: In % of the original width. 0 means full screen.
@@ -92,3 +98,13 @@ turn_on:
         number:
           min: 0
           max: 99
+    color_temperature:
+      name: Color temperature
+      description: Apply a color temperature correction. Default = Off, 1000 K = warm, 10000 K = cold.
+      example: 4500
+      selector:
+        number:
+          min: 1000
+          max: 10000
+          step: 500
+          unit_of_measurement: K
