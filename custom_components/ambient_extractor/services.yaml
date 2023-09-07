@@ -100,11 +100,11 @@ turn_on:
           max: 99
     color_temperature:
       name: Color temperature
-      description: Apply a color temperature correction. Default = Off, 1000 K = warm, 10000 K = cold.
-      example: 4500
+      description: Apply a color temperature correction. Default = Off.
+      example: 6600
       selector:
         number:
           min: 1000
           max: 10000
-          step: 500
+          step: 1
           unit_of_measurement: K

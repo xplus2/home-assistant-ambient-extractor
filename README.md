@@ -11,7 +11,7 @@ Additionally, overall brightness can be calculated and applied within adjustable
 | ambient_extract_url | * | URI | - | The full URL (including schema, `http://`, `https://`) of the image to process
 | ambient_extract_path | * | String | - | The full path to the image file on local storage we’ll process
 | entity_id | No | String | - | The light(s) we’ll set color and/or brightness of
-| color_temperature | Yes | Int: 1.000 to 10.000 in steps of 500. Default: 6700 K | 6.700 K | Apply color temperature correction
+| color_temperature | Yes | Int: 1.000 to 40.000 | 6.600 K | Apply color temperature correction
 | brightness_auto | Yes | Boolean | False | Detect and set brightness
 | brightness_mode | Yes | mean rms natural dominant | mean | Brightness calculation method. `mean` and `rms` use a grayscale image, `natural` uses perceived brightness, `dominant` the same color as for RGB (fastest).
 | brightness_min  | Yes | Int: 0 to 255 | 2 | Minimal brightness. `< 2` means off for most devices.
@@ -104,7 +104,7 @@ data_template:
   brightness_min: "{{ states('input_number.ambilight_brightness_min') }}"
   brightness_max: "{{ states('input_number.ambilight_brightness_max') }}"
 ```
-Create `ambilight_color_temperature` as Number from 1.000 to 10.000 with a step size of 500.
+Create `ambilight_color_temperature` as Number from 1.000 to 40.000, step size 1.
 
 
 ### Full automation YAML

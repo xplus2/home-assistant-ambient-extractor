@@ -1,3 +1,7 @@
+# v0.6.1
+`color_temperature` now accepts values from 1.000 to 40.000 K, step size 1.
+New default is 6.600
+
 # v0.6
 New features:
 - color_temperature
