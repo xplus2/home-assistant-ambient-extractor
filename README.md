@@ -11,7 +11,7 @@ Additionally, overall brightness can be calculated and applied within adjustable
 | ambient_extract_url | * | URI | - | The full URL (including schema, `http://`, `https://`) of the image to process
 | ambient_extract_path | * | String | - | The full path to the image file on local storage we’ll process
 | entity_id | No | String | - | The light(s) we’ll set color and/or brightness of
-| color_temperature | Yes | Int: 1.000 to 10.000 Kelvin in steps of 500. Default: 6700 K
+| color_temperature | Yes | Int: 1.000 to 10.000 in steps of 500. Default: 6700 K | 6.700 K | Apply color temperature correction
 | brightness_auto | Yes | Boolean | False | Detect and set brightness
 | brightness_mode | Yes | mean rms natural dominant | mean | Brightness calculation method. `mean` and `rms` use a grayscale image, `natural` uses perceived brightness, `dominant` the same color as for RGB (fastest).
 | brightness_min  | Yes | Int: 0 to 255 | 2 | Minimal brightness. `< 2` means off for most devices.
