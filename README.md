@@ -94,7 +94,7 @@ data_template:
 ```yaml
 service: ambient_extractor.turn_on
 data_template:
-  ambient_extract_url: "{{ states.media_player.firetv.attributes.entity_picture }}"
+  ambient_extract_url: "http://127.0.0.1:8123{{ states.media_player.firetv.attributes.entity_picture }}"
   entity_id:
     - light.living_room_zha_group_0x0002
   transition: 0.3
@@ -105,6 +105,8 @@ data_template:
   brightness_max: "{{ states('input_number.ambilight_brightness_max') }}"
 ```
 Create `ambilight_color_temperature` as Number from 1.000 to 40.000, step size 1.
+
+Make sure that `allowlist_external_urls` contains `http://127.0.0.1:8123` when using the `entity_picture` attribute.
 
 
 ### Full automation YAML
@@ -219,7 +221,7 @@ trigger:
 action:
   - service: ambient_extractor.turn_on
     data_template:
-      ambient_extract_url: "{{ states.media_player.firetv.attributes.entity_picture }}"
+      ambient_extract_url: "http://127.0.0.1:8123{{ states.media_player.firetv.attributes.entity_picture }}"
       entity_id:
         - light.living_room_floor_lamp
       transition: 2
